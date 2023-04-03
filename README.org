@@ -1,2 +1,9 @@
 * OpenAI Playground
 My musings with the openAI interface, various engines and exploring use cases.
+
+* Getting Started
+1. Rename the `template.yml` file to `.openAi.yml`
+2. Edit the `.openAi.yml` file and provide the correct secret key for your account
+3. type `cargo run`
+
+You can keep entering questions at the prompt, and type 'q' to quit.

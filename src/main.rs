@@ -11,7 +11,8 @@ mod open_ai {
 
     #[derive(Deserialize)]
     struct Configuration {
-	api_key: String
+	api_key: String,
+	model: String
     }
 
     #[derive(Deserialize)]
@@ -49,11 +50,9 @@ mod open_ai {
 	Ok(config.unwrap())
     }
 
-    fn get_headers() -> header::HeaderMap {
-	let config = load_config("./.openAi.yml")
-	    .unwrap_or_else(|e| panic!("Couldn't load config file: {}", e));
+    fn get_headers(api_key: &str) -> header::HeaderMap {
 	let hv = header::HeaderValue::from_str(&format!("Bearer {}",
-							config.api_key))
+							api_key))
 	    .expect("Invalid key format");
 	let mut headers = header::HeaderMap::new();
 	headers.insert(header::AUTHORIZATION, hv);
@@ -64,10 +63,12 @@ mod open_ai {
     }
 
     fn call_service(prompt: &str) -> Result<String, ()> {
-	let headers = get_headers();
+	let config = load_config("./.openAi.yml")
+	    .unwrap_or_else(|e| panic!("Couldn't load config file: {}", e));
+	let headers = get_headers(&config.api_key);
 	let url = OPEN_AI_URL;
 	let body = json!({
-	    "model": "gpt-3.5-turbo",
+	    "model": config.model,
 	    "messages": [{"role": "user", "content": prompt}],
 	    "temperature": 0.7
 	});
