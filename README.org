@@ -1,0 +1,2 @@
+* OpenAI Playground
+My musings with the openAI interface, various engines and exploring use cases.
